@@ -1,0 +1,19 @@
+---
+- name: Deploy dockerized web application
+  hosts: remote_server
+  tasks:
+    - name: Copy docker-compose.yml to remote server
+      copy:
+        src: docker-compose.yml
+        dest: /home/docker-compose.yml
+
+    - name: Copy nginx configuration template to remote server
+      copy:
+        src: default.conf
+        dest: /etc/nginx/nginx.conf.j2
+
+    - name: Install docker-compose on remote server
+      command: "sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
+
+    - name: Start docker-compose service
+      command: "docker compose up -d"
